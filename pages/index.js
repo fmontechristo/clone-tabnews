@@ -71,7 +71,7 @@ function Home() {
           zIndex: 1,
         }}
       >
-        🕯️ CURSO DEV TREVOSO!!!
+        🕯️ CURSO DEV TREVOSO!!
       </h1>
 
       {/* Arte ASCII */}
