@@ -53,7 +53,7 @@ function Home() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `url('https://img.freepik.com/free-photo/white-smoke-cloud-black-background-design-element-abstract-texture_53876-104580.jpg') repeat`,
+          background: `url('https://png.pngtree.com/png-clipart/20201209/original/pngtree-white-fog-smoke-png-image_5588202.jpg') repeat`,
           opacity: 0.07,
           animation: 'fog 60s linear infinite',
           zIndex: 0,
