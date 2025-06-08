@@ -1,27 +1,74 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-export default function Home() {
-  const [clicked, setClicked] = useState(false);
+function Home() {
+    const audioRef = useRef(null);
+    const [clicked, setClicked] = useState(false);
 
-  const handleClick = () => {
-    setClicked(true);
-    setTimeout(() => setClicked(false), 300);
-  };
+    useEffect(() => {
+        // Autoplay do som após interação do usuário
+        const playSound = () => {
+            if (audioRef.current) {
+                audioRef.current.volume = 0.2;
+                audioRef.current.play().catch(() => {});
+            }
+            window.removeEventListener('click', playSound);
+        };
+        window.addEventListener('click', playSound);
+    }, []);
 
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>CURSO DEV TREVOSO<span className="drip" /></h1>
+    const handleClick = () => {
+        setClicked(!clicked);
+    };
 
-      <pre
-        onClick={handleClick}
-        style={{
-          ...styles.ascii,
-          color: clicked ? 'crimson' : '#ccc',
-        }}
-        title="Clique... se tiver coragem"
-      >
-{`
-         @@@%%%%%%%%%%@@
+    return (
+        <div style={{
+            backgroundColor: '#111111', // fundo mais escuro
+            color: '#e0e0e0',
+            fontFamily: 'Courier New, monospace',
+            minHeight: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            padding: '2rem',
+            position: 'relative',
+            overflow: 'hidden',
+            textShadow: '0 0 5px #880808',
+        }}>
+            {/* NÉVOA */}
+            <div style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0, bottom: 0,
+                background: `url('https://static.vecteezy.com/ti/fotos-gratis/p1/10282157-fundo-preto-estudio-estudio-pano-de-fundo-papel-de-parede-dentro-quarto-abstrato-cinza-escuro-gradiente-foco-piso-textura-fundo-gratis-foto.jpg') repeat`,
+                opacity: 0.07,
+                animation: 'fog 60s linear infinite',
+                zIndex: 0,
+            }} />
+
+            {/* TÍTULO */}
+            <h1 style={{
+                fontFamily: 'Gothic A1, sans-serif',
+                color: '#880808',
+                marginBottom: '1rem',
+                letterSpacing: '2px',
+                fontSize: '2rem',
+                zIndex: 1,
+            }}>🕯️ CURSO DEV TREVOSO!! CLIQUE NA CAVEIRA!!</h1>
+
+            {/* ASCII ART */}
+            <pre
+                onClick={handleClick}
+                style={{
+                    whiteSpace: 'pre-wrap',
+                    lineHeight: '1.1',
+                    fontSize: '0.85rem',
+                    zIndex: 1,
+                    cursor: 'pointer',
+                    color: clicked ? '#ff2a2a' : '#ccc',
+                    transition: 'color 0.3s ease',
+                }}
+            >
+{`         @@@%%%%%%%%%%@@
        @@@%%%%%%%%%#######%@@
      @@@@%%%%%%%######?######%@
     @@@@%%%%%%%#######:########%@
@@ -37,58 +84,26 @@ export default function Home() {
 @%# ; ;??;;+ ;???+;;:..::.:+?%
  @???;;?+;;;+ ;:;;......;;;#@
  %##?++?+++;+ ??% @%%@@@@
- @_:?_:+_:_:#%
-`}
-      </pre>
+ @_:?_:+_:_:#%`}
+            </pre>
 
-      <style jsx>{`
-        .drip::after {
-          content: '';
-          display: block;
-          width: 6px;
-          height: 20px;
-          margin: 0 auto;
-          background: crimson;
-          animation: drip 1.2s infinite ease-in-out;
-          border-radius: 0 0 50% 50%;
-        }
+            {/* SOM AMBIENTE */}
+            <audio ref={audioRef} loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3" type="audio/mpeg" />
+                Seu navegador não suporta áudio.
+            </audio>
 
-        @keyframes drip {
-          0% { transform: translateY(0); opacity: 1; }
-          50% { transform: translateY(10px); opacity: 0.6; }
-          100% { transform: translateY(20px); opacity: 0; }
-        }
-      `}</style>
-    </div>
-  );
+            {/* CSS ANIMATION */}
+            <style>
+                {`
+                @keyframes fog {
+                    from { background-position: 0 0; }
+                    to { background-position: 1000px 0; }
+                }
+                `}
+            </style>
+        </div>
+    );
 }
 
-const styles = {
-  container: {
-    backgroundColor: '#0a0a0a',
-    minHeight: '100vh',
-    color: '#ccc',
-    fontFamily: "'Courier New', monospace",
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: '4rem 1rem',
-    userSelect: 'none',
-  },
-  title: {
-    fontSize: '2rem',
-    color: 'crimson',
-    marginBottom: '2rem',
-    fontFamily: "'Creepster', cursive", // se quiser importar no _app.js
-    textShadow: '0 0 5px crimson, 0 0 10px red',
-    textAlign: 'center',
-  },
-  ascii: {
-    fontSize: '13px',
-    whiteSpace: 'pre',
-    cursor: 'pointer',
-    textShadow: '0 0 5px #ff0000aa, 0 0 10px #ff000080',
-    transition: 'color 0.3s ease',
-  },
-};
+export default Home;
