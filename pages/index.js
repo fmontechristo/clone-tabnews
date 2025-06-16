@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 function Home() {
     const audioRef = useRef(null);
     const [clicked, setClicked] = useState(false);
-
+    
     useEffect(() => {
         // Autoplay do som após interação do usuário
         const playSound = () => {
